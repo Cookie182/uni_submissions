@@ -1,6 +1,8 @@
-import time
-import numpy as np
 import sys
+import time
+
+import numpy as np
+
 sys.setrecursionlimit(10**9)  # increasing recursion limit to prevent any potential limits
 
 ###############################################################################################################################################
@@ -212,7 +214,8 @@ def recursive_sum(combinations, target, index, sub_lists):
 
     for x in range(index, len(combinations)):
         sub_lists.append(combinations[x])  # adds all possible combinations to the sub list
-        recursive_sum(combinations, target - combinations[x], x, sub_lists)  # recursively calls function with new  for each comb in sub list
+        # recursively calls function with new  for each comb in sub list
+        recursive_sum(combinations, target - combinations[x], x, sub_lists)
         global comb_count
         comb_count += 1  # counter for total combinations
         sub_lists.remove(combinations[x])  # removes any other combination that has the same target in list
