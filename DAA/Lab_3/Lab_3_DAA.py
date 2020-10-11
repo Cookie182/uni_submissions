@@ -1,9 +1,10 @@
-from matplotlib import pyplot as plt  # to generate a graph
-import pandas as pd  # to generate a table to store data in
-import time  # to measure time
-import psutil  # to measure memory usage and cpu load
 import os  # to access the memory itself
 import random  # to generate a list of random integers
+import time  # to measure time
+
+import pandas as pd  # to generate a table to store data in
+import psutil  # to measure memory usage and cpu load
+from matplotlib import pyplot as plt  # to generate a graph
 
 """
 importing the numbers from the given file
@@ -156,7 +157,7 @@ def lca(root, v1, v2):  # function to calculate the LCA
         else:
             return 'Value not in the tree'
 
-# function to fill in the tree with the numbers from the givn assignment .txt file
+# function to fill in the tree with the numbers from the given assignment .txt file
 
 
 def fill_tree(tree):
