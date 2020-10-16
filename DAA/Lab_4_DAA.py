@@ -3,7 +3,8 @@ import time
 
 import numpy as np
 
-sys.setrecursionlimit(10**9)  # increasing recursion limit to prevent any potential limits
+# increasing recursion limit to prevent any potential limits
+sys.setrecursionlimit(10**9)
 
 ###############################################################################################################################################
 """ Question 1 - Number of queens with backtracking """
@@ -126,7 +127,8 @@ def complete(table):
         if valid_num(table, x, (row, col)):
             table[row][col] = x
 
-            if complete(table):  # recursively solve the table until fully complete with no more empty boxes
+            # recursively solve the table until fully complete with no more empty boxes
+            if complete(table):
                 return True
 
             table[row][col] = 0  # backtracks to reset the last changed element
@@ -137,12 +139,14 @@ def complete(table):
 def valid_num(table, num, pos):  # to check if a number satisfies the normal sudoku rules
     # checking the row
     for x in range(len(table[0])):
-        if table[pos[0]][x] == num and pos[1] != x:  # checking each row and a measure to prevent rechecking of recently entered boxes
+        # checking each row and a measure to prevent rechecking of recently entered boxes
+        if table[pos[0]][x] == num and pos[1] != x:
             return False
 
     # checking the column
     for x in range(len(table)):
-        if table[x][pos[1]] == num and pos[0] != x:  # same procedure, but for the column of table
+        # same procedure, but for the column of table
+        if table[x][pos[1]] == num and pos[0] != x:
             return False
 
     # checking within respective box, used integer division to seperate table into mini even boxes
@@ -150,9 +154,11 @@ def valid_num(table, num, pos):  # to check if a number satisfies the normal sud
     box_y = pos[0] // 3
 
     # to go into respective boxes
-    for x in range(box_y * 3, box_y * 3 + 3):  # to check which column (box length) to respond to
+    # to check which column (box length) to respond to
+    for x in range(box_y * 3, box_y * 3 + 3):
         for y in range(box_x * 3, box_x * 3 + 3):  # same as above but for row
-            if table[x][y] == num and (x, y) != pos:  # to check if element we add meets the sudoku rules
+            # to check if element we add meets the sudoku rules
+            if table[x][y] == num and (x, y) != pos:
                 return False
 
     return True
@@ -213,18 +219,21 @@ def recursive_sum(combinations, target, index, sub_lists):
         return
 
     for x in range(index, len(combinations)):
-        sub_lists.append(combinations[x])  # adds all possible combinations to the sub list
+        # adds all possible combinations to the sub list
+        sub_lists.append(combinations[x])
         # recursively calls function with new  for each comb in sub list
         recursive_sum(combinations, target - combinations[x], x, sub_lists)
         global comb_count
         comb_count += 1  # counter for total combinations
-        sub_lists.remove(combinations[x])  # removes any other combination that has the same target in list
+        # removes any other combination that has the same target in list
+        sub_lists.remove(combinations[x])
 
 
 while True:
     try:
         # getting valid list of numbers from user, turning into list of unique numbers
-        candidates = np.unique([int(x) for x in input('Enter spaced out numbers to compute: ').split()])
+        candidates = np.unique([int(x) for x in input(
+            'Enter spaced out numbers to compute: ').split()])
         target = int(input('Enter target value: '))  # valid target value
         break
     except:

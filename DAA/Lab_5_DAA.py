@@ -4,7 +4,8 @@ import time
 import pandas as pd
 from matplotlib import pyplot as plt
 
-sys.setrecursionlimit(10**9)  # increasing recursion limit to avoid any possible errors related to it
+# increasing recursion limit to avoid any possible errors related to it
+sys.setrecursionlimit(10**9)
 
 
 def valid_int():  # to get valid int input
@@ -50,7 +51,8 @@ def fibonacci_bf(num):
         return num
     global bf_count
     bf_count += 1  # counter
-    return fibonacci_bf(num - 2) + fibonacci_bf(num - 1)  # recursively calling the function
+    # recursively calling the function
+    return fibonacci_bf(num - 2) + fibonacci_bf(num - 1)
 
 
 # %%
@@ -69,14 +71,16 @@ def fibonacci_dp(num, show):  # dynamic programming function
 
 def fibonacci_mem(num, mem_dict):  # memoization function
     if num in mem_dict:
-        return mem_dict[num]  # returns the fibonacci value of n if already calculated
+        # returns the fibonacci value of n if already calculated
+        return mem_dict[num]
 
     if num in [0, 1]:
         mem_dict[num] = num  # trivial cases
 
     else:
         # if the n value and it's fibonacci number hasn't already been calculated, this calculates it and places it in the dictionary
-        mem_dict[num] = fibonacci_mem(num - 1, mem_dict) + fibonacci_mem(num - 2, mem_dict)
+        mem_dict[num] = fibonacci_mem(
+            num - 1, mem_dict) + fibonacci_mem(num - 2, mem_dict)
     return mem_dict[num]  # returns the fibnacci value that corresponds to n
 
 
@@ -108,17 +112,20 @@ num = valid_int()  # getting valid input
 # printing out the values from all the approaches when calculating fibonacci
 print('\nBrute Force approach - ')
 tic = time.time()
-print('Fibonacci {0} = {1}'.format(num, "{:,}".format(fibonacci_bf(num))))  # Brute force solution
+print('Fibonacci {0} = {1}'.format(num, "{:,}".format(
+    fibonacci_bf(num))))  # Brute force solution
 toc = time.time()
 bf_time = f"{toc - tic:0.6f}"
 print('Time taken to get Fibonacci number: {} s'.format(bf_time))
 print('The function was called {} times\n'.format(bf_count))
 time.sleep(1)
 print('Dynamic programming with memoization approach - ')
-print('Time taken to get Fibonacci number:', fibonacci_dp(num, True), 's\n')  # Dynamic programming and memoization appproach
+print('Time taken to get Fibonacci number:', fibonacci_dp(num, True),
+      's\n')  # Dynamic programming and memoization appproach
 time.sleep(1)
 print('Bottom to up approach - ')
-print('Time taken to get Fibonacci number:', fibonacci_botup(num, True), 's')  # Bottom to up approach
+print('Time taken to get Fibonacci number:', fibonacci_botup(
+    num, True), 's')  # Bottom to up approach
 
 # iterating a list of n = 0 - 1000 (step = 5) and calculating time to get fibonacci using dp/memoization and bottom to up approaches
 n_list = [x for x in range(0, 1001, 5)]
@@ -142,13 +149,15 @@ _ = input('\nPress anything ot continue to table of DP/Mem and Bot-Up aproaches.
 # %%
 # making the table to store time values for DP/Mem and Bot-Up approaches
 zipped = list(zip(n_list, dp_time, botup_time))
-df = pd.DataFrame(zipped, columns=['N', 'DP/Mem (s)', 'Bot-Up (s)']).set_index('N')
+df = pd.DataFrame(
+    zipped, columns=['N', 'DP/Mem (s)', 'Bot-Up (s)']).set_index('N')
 df.name = 'Main dataframe'
 
 # making a preview table to present why brute force times are not included in the coming graph, as the time difference is too high
 print('Brute force times will not be included in the coming graph because the time difference between brute force and the other approaches are too high: ')
 preview_zipped = list(zip(n_list, dp_time, botup_time, bf_time))
-preview_df = pd.DataFrame(preview_zipped, columns=['N', 'DP/Mem (s)', 'Bot-Up (s)', 'Brute force (s)']).set_index('N')
+preview_df = pd.DataFrame(preview_zipped, columns=[
+                          'N', 'DP/Mem (s)', 'Bot-Up (s)', 'Brute force (s)']).set_index('N')
 
 print(preview_df, '\n')
 _ = input('Press anything to continue to graph... \n')
@@ -158,10 +167,12 @@ _ = input('Press anything to continue to graph... \n')
 # making the graph to compare times for dp/memoization and bottom to up approaches
 plt.figure()
 plt.style.use('fivethirtyeight')
-plt.bar(df.index, df['DP/Mem (s)'], color='blue', label='DP and Memoization', width=5, alpha=0.5, align='center', edgecolor='black')
+plt.bar(df.index, df['DP/Mem (s)'], color='blue', label='DP and Memoization',
+        width=5, alpha=0.5, align='center', edgecolor='black')
 plt.bar(df.index, df['Bot-Up (s)'], color='red', label='Bottom to up (with space optimization)',
         width=5, alpha=0.5, align='center', edgecolor='black')
-plt.gca().set_title('Time comparison of DP and Memoization/Bottom to Up approaches', fontsize=14)
+plt.gca().set_title(
+    'Time comparison of DP and Memoization/Bottom to Up approaches', fontsize=14)
 plt.legend(loc='best', fontsize=8)
 plt.xlabel('N', fontsize=8)
 plt.xticks(fontsize=10)
