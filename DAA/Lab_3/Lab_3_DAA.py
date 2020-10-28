@@ -172,7 +172,8 @@ tree = binary_search_tree()
 tree = fill_tree(tree)
 # printing out the tree
 print('In order walk of the tree: ')
-tree.print_tree()  # this function draws out the tree in the correct order after the values have been inserted
+# this function draws out the tree in the correct order after the values have been inserted
+tree.print_tree()
 
 # getting the amount of levels in the tree
 print('\nTotal height of the tree: {}'.format(max(tree.height())))
