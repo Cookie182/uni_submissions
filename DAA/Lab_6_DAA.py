@@ -9,6 +9,7 @@ tree = {1: [2, 3],
         3: [1, 4, 5],
         5: [3, 6],
         6: [5]}
+
 #===================================================================================================#
 
 
@@ -31,7 +32,7 @@ class Graph:
         start = self.start
 
         visited = {}  # store nodes already visited
-        trav_turn = {}
+        trav_turn = {}  # store turns for pre and post visiting
         travel = []  # in order traversal
         queue = Queue()
 
@@ -55,7 +56,7 @@ class Graph:
         print('BFS')
         print('Inorder traversal (BFS) with starting point {} ='.format(
             start), *travel, '\n')
-        if set(tree.keys()) == set(travel):
+        if set(tree.keys()) == set(travel):  # check if the graph is connected
             print('The tree is connected')
         else:
             print('The tree is not connected')
@@ -111,7 +112,7 @@ class Graph:
 
         print('DFS')
         print('Inorder traversal (DFS) with starting point {} ='.format(start), *travel)
-        if set(tree.keys()) == set(travel):
+        if set(tree.keys()) == set(travel):  # print the counts after checking if graph is connected
             print('The tree is connected')
             print('\nPre and post visited counts:')
             for key, values in trav_turn.items():
@@ -120,12 +121,12 @@ class Graph:
             print('The tree is not connected')
 
 
-g = Graph(tree, 1)
-g.show()
+test = Graph(tree, 1)
+test.show()
 print('\n#=============================================================#\n')
 time.sleep(1)
-g.bfs()
+test.bfs()
 print('\n#=============================================================#\n')
 time.sleep(1)
-g.dfs()
+test.dfs()
 print('\n#=============================================================#\n')
