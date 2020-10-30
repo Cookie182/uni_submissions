@@ -2,14 +2,6 @@ from queue import Queue
 import numpy as np
 import time
 
-# the given graph (adjacency list format)
-tree = {1: [2, 3],
-        2: [1, 4],
-        4: [2, 3],
-        3: [1, 4, 5],
-        5: [3, 6],
-        6: [5]}
-
 #===================================================================================================#
 
 
@@ -19,15 +11,15 @@ class Graph:
         self.start = start
 
     def show(self):  # to show the tree and starting node
-
         print(f'Start at: {self.start}')
+        time.sleep(1)
         for keys, values in tree.items():
             print('Parent: {0}, Values = {1}'.format(keys, values))
+            time.sleep(1)
 
-    # Breadth first search
+    #===================================================================================================#
 
-    def bfs(self):
-
+    def bfs(self):  # Breadth first search
         visited = {}  # store nodes already visited
         trav_turn = {}  # store turns for pre and post visiting
         travel = []  # in order traversal
@@ -51,8 +43,10 @@ class Graph:
                     queue.put(vertex)
 
         print('BFS')
+        time.sleep(1)
         print('Inorder traversal (BFS) with starting point {} ='.format(
             self.start), *travel, '\n')
+        time.sleep(1)
         if set(tree.keys()) == set(travel):  # check if the graph is connected
             print('The tree is connected')
         else:
@@ -60,28 +54,22 @@ class Graph:
 
     #===================================================================================================#
 
-    # Depth first search
-
-    def dfs(self):
-
+    def dfs(self):  # Depth first search
         global trav_turn
-        trav_turn = {}  # to store the pre and print visited turn count
-
         global visited
-        visited = {}  # to store already visited nodes
-
         global travel
+        global end_turn
+        global start_turn
+
+        trav_turn = {}  # to store the pre and print visited turn count
+        visited = {}  # to store already visited nodes
         travel = []  # in order traversal
+        end_turn = 1  # post visit count
+        start_turn = 0  # pre visit count
 
         for node in self.tree.keys():  # starting values for each node
             visited[node] = False
             trav_turn[node] = [np.nan, np.nan]
-
-        global end_turn  # post visit count
-        end_turn = 1
-
-        global start_turn  # pre visit count
-        start_turn = 0
 
         def _dfs(x):  # helper
             global end_turn
@@ -103,25 +91,43 @@ class Graph:
             # updating turn counter
             trav_turn[x][1] = start_turn + end_turn
             end_turn += 1
-        _dfs(self.start)
+        _dfs(self.start)  # recursively call helper function
 
         print('DFS')
+        time.sleep(1)
         print('Inorder traversal (DFS) with starting point {} ='.format(self.start), *travel)
+        time.sleep(1)
         if set(self.tree.keys()) == set(travel):  # print the counts after checking if graph is connected
-            print('The tree is connected')
+            print('\nThe tree is connected')
             print('\nPre and post visited counts:')
             for key, values in trav_turn.items():
+                time.sleep(1)
                 print(f'For node {key}, pre visited count = {values[0]} and post visited count = {values[1]}')
         else:
             print('The tree is not connected')
 
+    #===================================================================================================#
 
-test = Graph(tree, 1)
-test.show()  # showing the tree and starting point
-print('\n#=============================================================#\n')
+    def compute(self):
+        self.show()  # showing the tree and starting point
+        print('\n#=============================================================#\n')
+        time.sleep(1)
+        self.bfs()  # BFS inorder traversal and showing if tree is connected or not
+        print('\n#=============================================================#\n')
+        time.sleep(1)
+        self.dfs()  # DFS inorder traversal, pre and post visit counts and showing if tree is connected or not
+        print('\n#=============================================================#\n')
+
+
+# the given graph (adjacency list format)
+tree = {1: [2, 3],
+        2: [1, 4],
+        4: [2, 3],
+        3: [1, 4, 5],
+        5: [3, 6],
+        6: [5]}
+
+test = Graph(tree, 1)  # initializing tree and starting point
+test.compute()
 time.sleep(1)
-test.bfs()  # BFS inorder traversal and showing if tree is connected or not
-print('\n#=============================================================#\n')
-time.sleep(1)
-test.dfs()  # DFS inorder traversal, pre and post visit counts and showing if tree is connected or not
-print('\n#=============================================================#\n')
+print('Ashwin Rajesh Jawalikar, 20190802140')
