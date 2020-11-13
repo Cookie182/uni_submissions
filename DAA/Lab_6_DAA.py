@@ -95,14 +95,17 @@ class Graph:
 
         print('DFS')
         time.sleep(1)
-        print('Inorder traversal (DFS) with starting point {} ='.format(self.start), *travel)
+        print('Inorder traversal (DFS) with starting point {} ='.format(
+            self.start), *travel)
         time.sleep(1)
-        if set(self.tree.keys()) == set(travel):  # print the counts after checking if graph is connected
+        # print the counts after checking if graph is connected
+        if set(self.tree.keys()) == set(travel):
             print('\nThe tree is connected')
             print('\nPre and post visited counts:')
             for key, values in trav_turn.items():
                 time.sleep(1)
-                print(f'For node {key}, pre visited count = {values[0]} and post visited count = {values[1]}')
+                print(
+                    f'For node {key}, pre visited count = {values[0]} and post visited count = {values[1]}')
         else:
             print('The tree is not connected')
 
