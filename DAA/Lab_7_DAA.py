@@ -1,9 +1,9 @@
 import time
-from tqdm import tqdm
 from collections import defaultdict
 import heapq
 import numpy as np
 from matplotlib import pyplot as plt
+import pandas as pd
 
 
 class Graph:  # class that does it all
@@ -16,7 +16,6 @@ class Graph:  # class that does it all
 
     def prim(self, source='a'):
         """ Func to find the MST via Prim's algorithm """
-
         print("\n=============================")
         print("MST with Prim's Algorithm\n")
 
@@ -32,8 +31,8 @@ class Graph:  # class that does it all
                     print('Enter valid input from {}\n'.format(
                         list(self.graph.keys())))
 
-        print(f"Start from = {source}")
-        path = defaultdict(set)  # tree path
+        print(f"Start from = {source}\n")
+        prim_path = defaultdict(set)  # tree path
         visited = [source]
         # automatically making the vertex from node goal node and coupling in their respective weight
         vertex = [(weight, source, goal)
@@ -46,18 +45,21 @@ class Graph:  # class that does it all
             weight, start, goal = heapq.heappop(vertex)
             if goal not in visited:  # storing nodes that are visited
                 visited.append(goal)
-                path[start].add(goal)  # adding the children of nodes
+                prim_path[start].add(goal)  # adding the children of nodes
                 for next, weight in self.graph[goal].items():
                     if next not in visited:  # add unvisited nodes and their weight to the heap
                         heapq.heappush(vertex, (weight, goal, next))
 
         # pairing start and destinations
-        path = list(zip(list(path.keys()), list(path[x] for x in path.keys())))
+        prim_path = list(zip(list(prim_path.keys()), list(prim_path[x] for x in prim_path.keys())))
 
         # pretty printing the result
         time.sleep(0.2)
-        for keys, values in path:
-            print(f"From {keys} -> {values}")
+        i = 0
+        for keys, values in prim_path:
+            values = list(values)
+            i += 1
+            print("{0}. From {1} ->".format(i, keys), " -> ".join(map(str, values)))
             time.sleep(0.2)
 
     #==================================================================#
@@ -103,10 +105,13 @@ class Graph:  # class that does it all
             if self.find(v) != self.find(u):  # closed loop checker
                 self.union(v, u)
                 path.append(vertex)
+
+        i = 0
         print("\n=============================")
         print("MST with Kruskal algorithm\n")
         for x in range(len(path)):
-            print(f"{path[x][1]} to {path[x][2]} -> {path[x][0]}")
+            i += 1
+            print(f"{i}. {path[x][1]} <--> {path[x][2]} weight = {path[x][0]}")
             time.sleep(0.2)
         time.sleep(0.2)
         print(f"\nTotal Weight -> {np.sum([x[0] for x in path])}")
@@ -119,19 +124,20 @@ class Graph:  # class that does it all
         """ Func to pretty print out the nodes and it's children along with the each of their weight """
         print('Graph:')
         keys = list(self.graph.keys())
+        i = 0
         for key in keys:
             sub_keys = list(self.graph[key].keys())
+            i = i + 1
             for sub_key in sub_keys:
                 if sub_key == sub_keys[0]:
-                    print('-----------')
-                    print(f'{key} -> {sub_key} = {self.graph[key][sub_key]}')
+                    print('-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
+                    print(f'{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}')
                     time.sleep(0.2)
                 else:
-                    print(
-                        f"{' ' * len(f'{key} -> ')}{sub_key} = {self.graph[key][sub_key]}")
+                    print(f"{' ' * len(f'{i}. From {key}')} <--> {sub_key}, weight = {self.graph[key][sub_key]}")
                     time.sleep(0.2)
 
-        print('-----------')
+        print('-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
 
         # storing the points for the nodes
         points = [[1, 2],
@@ -151,7 +157,8 @@ class Graph:  # class that does it all
             plt.text(x, y, tag, fontdict={'color': color, 'size': 20},
                      horizontalalignment='center', verticalalignment='center')
 
-        plt.figure()  # plotting the graph on matplotlib
+        fig = plt.figure(frameon=False)  # plotting the graph on matplotlib
+        fig.canvas.set_window_title('Graph given for the assignment')
         plt.style.use('fivethirtyeight')
 
         # vertices
@@ -222,24 +229,40 @@ class Graph:  # class that does it all
                 else:
                     print('Enter valid input from {}\n'.format(list(self.graph.keys())))
 
-        print("\n=============================\n")
+        paths = []
+        path_times = []
+        end_path = []
+        path_weight = []
+        print("\n=============================")
         # iterate through each node set as destination (other than starting node)
-        for x in tqdm(self.graph.keys() - start, unit='Finding shortest paths'):
-            graph = self.graph.copy()
-            self.dijkstra_path(graph, x, start)
-            print("\n=============================\n")
+        for x in self.graph.keys() - start:
+            self.dijkstra_path(self.graph.copy(), end=x, start=start)
+            print("=============================")
             time.sleep(0.2)
+            paths.append(' -> '.join(map(str, path)))
+            path_times.append(path_time)
+            end_path.append(x)
+            path_weight.append(s_dist[x])
+
+        print("\nDijkstra paths from source to all nodes in a graph:-\n")
+        df = pd.DataFrame(list(zip(paths, path_weight, path_times)),
+                          columns=['Path', 'Weight', 'Time (s)'],
+                          index=[[start] * len(path_times), end_path]).sort_values('Weight')
+        df.index.set_names(['Start', 'End'], inplace=True)
+        print(df)
 
     def dijkstra_path(self, graph, end, start):
         """ Func to find the shortest path from a specified source and end node """
         tic = time.time()
 
         # showing the path
-        print(f"\nStarting from {start} to {end}")
+        print(f"Starting from {start} to {end}")
 
+        global s_dist
         s_dist = {}  # constantly updating weight
         prev = {}  # store the path of shortest weight
         unseen = graph  # to make sure every node gets seen while iterating
+        global path
         path = []  # store end shortest path
         for node in unseen:
             s_dist[node] = float('inf')  # initial value
@@ -267,12 +290,14 @@ class Graph:  # class that does it all
             path.insert(0, curr)
             curr = prev[curr]  # keep storing previous nodes in shortest path
         path.insert(0, start)
-        print('\nSmallest weight is {}'.format(s_dist[end]))
+        print('\nLeast cumulative weight -> {}'.format(s_dist[end]))
         time.sleep(0.2)
-        print("Path is: {}".format(path))
+        print("Path: from", ' -> '.join(map(str, path)))
         time.sleep(0.2)
         toc = time.time()
-        print(f"Time taken: {toc - tic:.5f}s")
+        global path_time
+        path_time = np.round(toc - tic, 3)
+        print(f"{path_time}s")
 
     #==================================================================#
 
