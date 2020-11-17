@@ -1,9 +1,10 @@
+import pandas as pd
 import time
 from collections import defaultdict
 import heapq
 import numpy as np
 from matplotlib import pyplot as plt
-import pandas as pd
+plt.style.use('fivethirtyeight')
 
 
 class Graph:  # class that does it all
@@ -116,28 +117,6 @@ class Graph:  # class that does it all
         time.sleep(0.2)
         print(f"\nTotal Weight -> {np.sum([x[0] for x in path])}")
         time.sleep(0.2)
-        return ''
-
-    #==================================================================#
-
-    def show_graph(self):
-        """ Func to pretty print out the nodes and it's children along with the each of their weight """
-        print('Graph:')
-        keys = list(self.graph.keys())
-        i = 0
-        for key in keys:
-            sub_keys = list(self.graph[key].keys())
-            i = i + 1
-            for sub_key in sub_keys:
-                if sub_key == sub_keys[0]:
-                    print('-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
-                    print(f'{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}')
-                    time.sleep(0.2)
-                else:
-                    print(f"{' ' * len(f'{i}. From {key}')} <--> {sub_key}, weight = {self.graph[key][sub_key]}")
-                    time.sleep(0.2)
-
-        print('-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
 
         # storing the points for the nodes
         points = [[1, 2],
@@ -147,46 +126,37 @@ class Graph:  # class that does it all
                   [5, 1], [5, 3],
                   [6, 2]]
 
-        def edge(x, y):
-            """ Func to plot the vertices between nodes """
-            plt.plot(x, y, color='red',
-                     linewidth=5, alpha=0.7, zorder=1)
+        a, b, h, i, g, c, f, d, e = map(tuple, points)  # appointing points to the appropriate node
+        nodes = ['a', 'b', 'h', 'i', 'g', 'c', 'f', 'd', 'e']  # node tags
+
+        # creating a custom points version of the graph (no string tags, instead just the points)
+        graph_nodes = {a: {b: 4, h: 8},
+                       b: {a: 4, h: 11, c: 8},
+                       h: {a: 8, b: 11, i: 7, g: 1},
+                       i: {h: 7, g: 6, c: 2},
+                       g: {h: 1, i: 6, f: 2},
+                       c: {b: 8, i: 2, f: 4, d: 7},
+                       f: {g: 2, c: 4, d: 14, e: 10},
+                       d: {c: 7, f: 14, e: 6},
+                       e: {d: 6, f: 10}}
 
         def tag(x, y, tag, color='white'):
             """ Func to plot the nodes and the necessary tags for the graph """
             plt.text(x, y, tag, fontdict={'color': color, 'size': 20},
                      horizontalalignment='center', verticalalignment='center')
 
-        fig = plt.figure(frameon=False)  # plotting the graph on matplotlib
-        fig.canvas.set_window_title('Graph given for the assignment')
-        plt.style.use('fivethirtyeight')
+        fig = plt.figure(frameon=False, figsize=(12, 9))
 
-        # vertices
-        edge([1, 2], [2, 1])
-        edge([1, 2], [2, 3])
-        edge([2, 2], [1, 3])
-        edge([2, 3], [1, 2])
-        edge([2, 4], [3, 3])
-        edge([3, 4], [2, 3])
-        edge([2, 2], [1, 1])
-        edge([2, 4], [1, 1])
-        edge([3, 4], [2, 1])
-        edge([4, 5], [1, 1])
-        edge([4, 5], [3, 1])
-        edge([4, 5], [3, 3])
-        edge([5, 5], [1, 3])
-        edge([5, 6], [1, 2])
-        edge([5, 6], [3, 2])
-
-        # nodes
-        plt.scatter([x[0] for x in points],
-                    [x[1] for x in points],
-                    s=1800, c='black', zorder=2, edgecolor='blue', linewidth=5)
-
-        # node tags
-        node_tags = list(self.graph.keys())
-        for point in range(len(points)):
-            tag(points[point][0], points[point][1], node_tags[point])
+        # Unmodified graph
+        fig.add_subplot(1, 2, 1)
+        for z in range(len(nodes)):
+            x = list(graph_nodes.keys())[z]
+            for y in graph_nodes[x]:
+                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400, c='black', zorder=2, edgecolor='blue', linewidth=5)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='black', zorder=1, linewidth=20)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='red', zorder=1, linewidth=7)
+            plt.text(points[z][0], points[z][1], nodes[z],
+                     fontdict={'color': 'white', 'family': 'Comic Sans MS', 'size': 25}, horizontalalignment='center', verticalalignment='center')
 
         # weight tags
         tag(1.4, 1.4, 8, 'black')
@@ -208,6 +178,122 @@ class Graph:  # class that does it all
         plt.gca().axes.get_xaxis().set_visible(False)
         plt.gca().axes.get_yaxis().set_visible(False)
         plt.tight_layout()
+
+        # MST graph with Kruskal algorithm
+        fig.add_subplot(1, 2, 2)
+        for z in range(len(nodes)):
+            x = list(graph_nodes.keys())[z]
+            for y in graph_nodes[x]:
+                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400, c='black', zorder=3, edgecolor='blue', linewidth=5)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='red', zorder=1, linewidth=20, alpha=0.1)
+            plt.text(points[z][0], points[z][1], nodes[z],
+                     fontdict={'color': 'white', 'family': 'Comic Sans MS', 'size': 25}, horizontalalignment='center', verticalalignment='center')
+
+        for x in range(len(path)):
+            edge = (nodes.index(path[x][1]), nodes.index(path[x][2]))
+            plt.plot([points[edge[0]][0], points[edge[1]][0]], [points[edge[0]][1], points[edge[1]][1]], zorder=2,
+                     c='black', linewidth=20, alpha=1)
+            plt.plot([points[edge[0]][0], points[edge[1]][0]], [points[edge[0]][1], points[edge[1]][1]], zorder=2,
+                     c='red', linewidth=7, alpha=1)
+
+        # weight tags
+        tag(1.4, 1.4, 8, 'black')
+        tag(1.4, 2.65, 4, 'black')
+        tag(3, 1.1, 1, 'black')
+        tag(3.3, 2.5, 2, 'black')
+        tag(4.5, 2.9, 7, 'black')
+        tag(4.3, 2, 4, 'black')
+        tag(5.3, 2.5, 6, 'black')
+        tag(4.5, 1.1, 2, 'black')
+
+        plt.gca().set_title('MST via Kruskal Algorithm, Total Weight -> {}'.format(np.sum([x[0] for x in path])))
+        plt.gca().axes.get_xaxis().set_visible(False)
+        plt.gca().axes.get_yaxis().set_visible(False)
+        plt.tight_layout()
+        fig.canvas.set_window_title('Finding MST using Kruskal algorithm on given graph')
+        plt.show()
+
+        return ''
+
+    #==================================================================#
+
+    def show_edges(self):
+        """ Func to pretty print out the nodes and it's children along with the each of their weight """
+        print('Graph:')
+        keys = list(self.graph.keys())
+        i = 0
+        for key in keys:
+            sub_keys = list(self.graph[key].keys())
+            i = i + 1
+            for sub_key in sub_keys:
+                if sub_key == sub_keys[0]:
+                    print('-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
+                    print(f'{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}')
+                    time.sleep(0.2)
+                else:
+                    print(f"{' ' * len(f'{i}. From {key}')} <--> {sub_key}, weight = {self.graph[key][sub_key]}")
+                    time.sleep(0.2)
+        print('-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
+
+        # storing the points for the nodes
+        points = [[1, 2],
+                  [2, 3], [2, 1],
+                  [3, 2],
+                  [4, 1], [4, 3],
+                  [5, 1], [5, 3],
+                  [6, 2]]
+
+        a, b, h, i, g, c, f, d, e = map(tuple, points)  # appointing points to the appropriate node
+        nodes = ['a', 'b', 'h', 'i', 'g', 'c', 'f', 'd', 'e']  # node tags
+
+        # creating a custom points version of the graph (no string tags, instead just the points)
+        graph_nodes = {a: {b: 4, h: 8},
+                       b: {a: 4, h: 11, c: 8},
+                       h: {a: 8, b: 11, i: 7, g: 1},
+                       i: {h: 7, g: 6, c: 2},
+                       g: {h: 1, i: 6, f: 2},
+                       c: {b: 8, i: 2, f: 4, d: 7},
+                       f: {g: 2, c: 4, d: 14, e: 10},
+                       d: {c: 7, f: 14, e: 6},
+                       e: {d: 6, f: 10}}
+
+        def tag(x, y, tag, color='white'):
+            """ Func to plot the nodes and the necessary tags for the graph """
+            plt.text(x, y, tag, fontdict={'color': color, 'size': 20},
+                     horizontalalignment='center', verticalalignment='center')
+
+        fig = plt.figure(frameon=False, figsize=(12, 9))
+
+        for z in range(len(nodes)):
+            x = list(graph_nodes.keys())[z]
+            for y in graph_nodes[x]:
+                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400, c='black', zorder=2, edgecolor='blue', linewidth=5)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='black', zorder=1, linewidth=20)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='red', zorder=1, linewidth=7)
+            plt.text(points[z][0], points[z][1], nodes[z],
+                     fontdict={'color': 'white', 'family': 'Comic Sans MS', 'size': 25}, horizontalalignment='center', verticalalignment='center')
+
+        # weight tags
+        tag(1.4, 1.4, 8, 'black')
+        tag(1.4, 2.65, 4, 'black')
+        tag(1.8, 2, 11, 'black')
+        tag(3, 1.1, 1, 'black')
+        tag(2.7, 1.5, 7, 'black')
+        tag(3.3, 1.5, 6, 'black')
+        tag(3, 2.9, 8, 'black')
+        tag(3.3, 2.5, 2, 'black')
+        tag(4.5, 2.9, 7, 'black')
+        tag(4.8, 2, 14, 'black')
+        tag(4.3, 2, 4, 'black')
+        tag(5.3, 2.5, 6, 'black')
+        tag(4.5, 1.1, 2, 'black')
+        tag(5.3, 1.5, 10, 'black')
+
+        plt.gca().set_title('Graph')
+        plt.gca().axes.get_xaxis().set_visible(False)
+        plt.gca().axes.get_yaxis().set_visible(False)
+        plt.tight_layout()
+        fig.canvas.set_window_title('Given graph')
         plt.show()
 
         time.sleep(0.5)
@@ -297,13 +383,13 @@ class Graph:  # class that does it all
         toc = time.time()
         global path_time
         path_time = np.round(toc - tic, 3)
-        print(f"{path_time}s")
+        print(f"Time: {path_time}s")
 
     #==================================================================#
 
     def show_results(self):
         """ Func to show all the results for each question """
-        self.show_graph()
+        self.show_edges()
         self.prim()
         self.kruskal()
         self.dijkstra_allpaths()
