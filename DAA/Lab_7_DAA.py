@@ -32,12 +32,11 @@ class Graph:  # class that does it all
                     print('Enter valid input from {}\n'.format(
                         list(self.graph.keys())))
 
-        print(f"Start from = {source}\n")
+        print(f"Start from = {source}")
         prim_path = defaultdict(set)  # tree path
         visited = [source]
         # automatically making the vertex from node goal node and coupling in their respective weight
-        vertex = [(weight, source, goal)
-                  for goal, weight in self.graph[source].items()]
+        vertex = [(weight, source, goal) for goal, weight in self.graph[source].items()]
         # automatically prioritize node with smallest weight
         heapq.heapify(vertex)
 
@@ -56,12 +55,25 @@ class Graph:  # class that does it all
 
         # pretty printing the result
         time.sleep(0.2)
-        i = 0
+        tot_weight = 0
+        i = 1
         for keys, values in prim_path:
+            time.sleep(0.5)
             values = list(values)
+            print('=' * 25)
+            for x in range(len(values)):
+                if x == 0:
+                    print("{0}. From {1} ->".format(i, keys), " -> ".join(map(str, values[x])),
+                          'weight -> {0}'.format(self.graph[keys][values[x]]))
+                else:
+                    print("   From {0} ->".format(keys), " -> ".join(map(str, values[x])),
+                          'weight -> {0}'.format(self.graph[keys][values[x]]))
+                time.sleep(0.2)
             i += 1
-            print("{0}. From {1} ->".format(i, keys), " -> ".join(map(str, values)))
-            time.sleep(0.2)
+            tot_weight += np.sum([self.graph[keys][x] for x in values])
+            print("   Total weight ->", np.sum([self.graph[keys][x] for x in values]))
+        time.sleep(0.5)
+        print("\nMST total weight ->", tot_weight)
 
     #==================================================================#
 
@@ -108,7 +120,7 @@ class Graph:  # class that does it all
                 path.append(vertex)
 
         i = 0
-        print("\n=============================")
+        print("=============================")
         print("MST with Kruskal algorithm\n")
         for x in range(len(path)):
             i += 1
@@ -174,7 +186,7 @@ class Graph:  # class that does it all
         tag(4.5, 1.1, 2, 'black')
         tag(5.3, 1.5, 10, 'black')
 
-        plt.gca().set_title('Graph')
+        plt.gca().set_title('Graph', fontsize=15)
         plt.gca().axes.get_xaxis().set_visible(False)
         plt.gca().axes.get_yaxis().set_visible(False)
         plt.tight_layout()
@@ -206,7 +218,7 @@ class Graph:  # class that does it all
         tag(5.3, 2.5, 6, 'black')
         tag(4.5, 1.1, 2, 'black')
 
-        plt.gca().set_title('MST via Kruskal Algorithm, Total Weight -> {}'.format(np.sum([x[0] for x in path])))
+        plt.gca().set_title('MST via Kruskal Algorithm, Total Weight -> {}'.format(np.sum([x[0] for x in path])), fontsize=15)
         plt.gca().axes.get_xaxis().set_visible(False)
         plt.gca().axes.get_yaxis().set_visible(False)
         plt.tight_layout()
@@ -319,7 +331,7 @@ class Graph:  # class that does it all
         path_times = []
         end_path = []
         path_weight = []
-        print("\n=============================")
+        print("=============================")
         # iterate through each node set as destination (other than starting node)
         for x in self.graph.keys() - start:
             self.dijkstra_path(self.graph.copy(), end=x, start=start)
