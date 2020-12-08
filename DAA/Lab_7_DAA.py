@@ -4,7 +4,7 @@ from collections import defaultdict
 import heapq
 import numpy as np
 from matplotlib import pyplot as plt
-plt.style.use('fivethirtyeight')
+plt.style.use('classic')
 
 
 class Graph:  # class that does it all
@@ -60,18 +60,18 @@ class Graph:  # class that does it all
         for keys, values in prim_path:
             time.sleep(0.5)
             values = list(values)
-            print('=' * 25)
+            print('=' * 35)
             for x in range(len(values)):
                 if x == 0:
                     print("{0}. From {1} ->".format(i, keys), " -> ".join(map(str, values[x])),
                           'weight -> {0}'.format(self.graph[keys][values[x]]))
                 else:
-                    print("   From {0} ->".format(keys), " -> ".join(map(str, values[x])),
+                    print("          ->".format(keys), " -> ".join(map(str, values[x])),
                           'weight -> {0}'.format(self.graph[keys][values[x]]))
                 time.sleep(0.2)
             i += 1
             tot_weight += np.sum([self.graph[keys][x] for x in values])
-            print("   Total weight ->", np.sum([self.graph[keys][x] for x in values]))
+            print("   Cummulative weight so far -> {}".format(tot_weight))
         time.sleep(0.5)
         print("\nMST total weight ->", tot_weight)
 
