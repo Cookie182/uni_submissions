@@ -21,10 +21,10 @@ class Graph:  # class that does it all
         print("MST with Prim's Algorithm\n")
 
         # asking for source, getting valid input
-        choice = input("Default source node = 'a', change? [Y/N]: ").lower()
+        choice = input("Default source node = 'a', change? [Y/N]: ").lower().strip()
         if choice == 'y':
             while True:  # loop to get valid input
-                source = input(f"\nEnter source node {set(self.graph.keys())}: ")
+                source = input(f"\nEnter source node {set(self.graph.keys())}: ").strip()
                 if (source.isalpha()) and (source.lower() in self.graph.keys()):  # check if alpha and in graph
                     source = source.lower()
                     break
@@ -317,10 +317,10 @@ class Graph:  # class that does it all
         print("\n=============================\nDijkstra's algorithm")
 
         start = 'a'
-        choice = input("Default source = 'a', change? [Y/N]: ")
+        choice = input("Default source = 'a', change? [Y/N]: ").strip()
         if choice.lower() == 'y':
             while True:  # loop to get valid input
-                start = input(f"\nEnter source node {set(self.graph.keys())}: ")
+                start = input(f"\nEnter source node {set(self.graph.keys())}: ").strip()
                 if (start.isalpha()) and (start.lower() in self.graph.keys()):  # check if alpha and in graph
                     start = start.lower()
                     break
