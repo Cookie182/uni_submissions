@@ -29,8 +29,7 @@ class Graph:  # class that does it all
                     source = source.lower()
                     break
                 else:
-                    print('Enter valid input from {}\n'.format(
-                        list(self.graph.keys())))
+                    print('Enter valid input from {}\n'.format(list(self.graph.keys())))
 
         print(f"Start from = {source}")
         prim_path = defaultdict(set)  # tree path
@@ -343,8 +342,7 @@ class Graph:  # class that does it all
             path_weight.append(s_dist[x])
 
         print("\nDijkstra paths from source to all nodes in a graph:-\n")
-        df = pd.DataFrame(list(zip(paths, path_weight, path_times)),
-                          columns=['Path', 'Weight', 'Time (s)'],
+        df = pd.DataFrame(list(zip(paths, path_weight, path_times)), columns=['Path', 'Weight', 'Time (s)'],
                           index=[[start] * len(path_times), end_path]).sort_values('Weight')
         df.index.set_names(['Start', 'End'], inplace=True)
         print(df)
