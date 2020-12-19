@@ -15,7 +15,7 @@ class Graph:
         time.sleep(1)
         for keys, values in tree.items():
             print('Parent: {0}, Values = {1}'.format(keys, values))
-            time.sleep(1)
+            time.sleep(0.5)
 
     #===================================================================================================#
 

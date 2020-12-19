@@ -62,7 +62,7 @@ def count_queens():  # counting the queens that are on the board
     Q_count = 0
     for x in chessboard:
         Q_count += x.count('Q')
-    print('{} queens can be plaed on the board'.format(Q_count))
+    print('{} queens can be placed on the board'.format(Q_count))
 
 
 for num in range(2, 10):  # loop to print chessboard for N values of 2 - 9
@@ -75,7 +75,8 @@ for num in range(2, 10):  # loop to print chessboard for N values of 2 - 9
     print_chessboard()  # to pretty printing chessboard
     print('Time to solve: {}s'.format(f"{toc - tic:0.6f}"))
     if num != 9:  # checkpoint except for last N value
-        checkpoint = input('Press anything to continue to next N value...\n')
+        print('Going to the next N value...\n')
+        time.sleep(1)
 
 
 # to ask user if they want to try problem with custom N value
@@ -191,8 +192,7 @@ def find_empty(table):  # finding empty boxes in table
 # printing results
 print('Before: ')
 print_table(table)
-complete(table)
-_ = input('Press anything to continue...')
+time.sleep(1)
 print("_____________________")
 print('After: ')
 print_table(table)
