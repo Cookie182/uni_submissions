@@ -231,9 +231,8 @@ class Graph:  # class that does it all
     def show_edges(self):
         """ Func to pretty print out the nodes and it's children along with the each of their weight """
         print('Graph:')
-        keys = list(self.graph.keys())
         i = 0
-        for key in keys:
+        for key in list(self.graph.keys()):
             sub_keys = list(self.graph[key].keys())
             i = i + 1
             for sub_key in sub_keys:
