@@ -1,6 +1,6 @@
 # University Assignments
-## **In DAA Folder there are 7 Lab assignment folders, each containing the lab assignment given and the written code**:
 ![Sorting algorithms](https://www.mybluelinux.com/img/post/featured-images/0072.sorting_algorithms.jpg)
+## **In DAA Folder there are 7 Lab assignment folders, each containing the lab assignment given and the written code**:
 ## * [Lab 1](https://github.com/Cookie182/DAA/tree/main/DAA/Lab_1 "Lab 1 assignment and code") - *To Compute the performance of sorting algorithms*
 ## * [Lab 2](https://github.com/Cookie182/DAA/tree/main/DAA/Lab_2 "Lab 2 assignment and code") - *Iterative Vs Recursion*
 ## * [Lab 3](https://github.com/Cookie182/DAA/tree/main/DAA/Lab_3 "Lab 3 assignment and code") - *Data Structure Binary Search Tree*
