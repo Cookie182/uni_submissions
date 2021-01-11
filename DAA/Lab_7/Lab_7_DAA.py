@@ -1,10 +1,10 @@
 import pandas as pd
 import time
-from collections import defaultdict
 import heapq
+from collections import defaultdict
 import numpy as np
 from matplotlib import pyplot as plt
-plt.style.use('fivethirtyeight')
+plt.style.use('classic')
 
 
 class Graph:  # class that does it all
@@ -21,8 +21,7 @@ class Graph:  # class that does it all
         print("MST with Prim's Algorithm\n")
 
         # asking for source, getting valid input
-        choice = input(
-            "Default source node = 'a', change? [Y/N]: ").lower().strip()
+        choice = input("Default source node = 'a', change? [Y/N]: ").lower().strip()
         if choice == 'y':
             while True:  # loop to get valid input
                 source = input(
