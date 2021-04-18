@@ -226,7 +226,5 @@ def lcs(str1, str2):
 
 strings = valid_str()
 print(lcs(strings[0], strings[1]))
-
-print('Ashwin Rajesh Jawalikar, 20190802140')
 # %%
 ```
