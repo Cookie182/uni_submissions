@@ -1,10 +1,10 @@
 import pandas as pd
 import time
-import heapq
 from collections import defaultdict
+import heapq
 import numpy as np
 from matplotlib import pyplot as plt
-plt.style.use('classic')
+plt.style.use('fivethirtyeight')
 
 
 class Graph:  # class that does it all
@@ -21,20 +21,18 @@ class Graph:  # class that does it all
         print("MST with Prim's Algorithm\n")
 
         # asking for source, getting valid input
-        choice = input("Default source node = 'a', change? [Y/N]: ").lower().strip()
+        choice = input("Default source node = 'a', change? [Y/N]: ").lower()
         if choice == 'y':
             while True:  # loop to get valid input
-                source = input(
-                    f"\nEnter source node {set(self.graph.keys())}: ").strip()
-                # check if alpha and in graph
-                if (source.isalpha()) and (source.lower() in self.graph.keys()):
+                source = input(f"\nEnter source node {set(self.graph.keys())}: ")
+                if (source.isalpha()) and (source.lower() in self.graph.keys()):  # check if alpha and in graph
                     source = source.lower()
                     break
                 else:
                     print('Enter valid input from {}\n'.format(
                         list(self.graph.keys())))
 
-        print(f"Start from = {source}")
+        print(f"Start from = {source}\n")
         prim_path = defaultdict(set)  # tree path
         visited = [source]
         # automatically making the vertex from node goal node and coupling in their respective weight
@@ -54,30 +52,16 @@ class Graph:  # class that does it all
                         heapq.heappush(vertex, (weight, goal, next))
 
         # pairing start and destinations
-        prim_path = list(zip(list(prim_path.keys()), list(
-            prim_path[x] for x in prim_path.keys())))
+        prim_path = list(zip(list(prim_path.keys()), list(prim_path[x] for x in prim_path.keys())))
 
         # pretty printing the result
         time.sleep(0.2)
-        tot_weight = 0
-        i = 1
+        i = 0
         for keys, values in prim_path:
-            time.sleep(0.5)
             values = list(values)
-            print('=' * 35)
-            for x in range(len(values)):
-                if x == 0:
-                    print("{0}. From {1} ->".format(i, keys), " -> ".join(map(str, values[x])),
-                          'weight -> {0}'.format(self.graph[keys][values[x]]))
-                else:
-                    print("          ->".format(keys), " -> ".join(map(str, values[x])),
-                          'weight -> {0}'.format(self.graph[keys][values[x]]))
-                time.sleep(0.2)
             i += 1
-            tot_weight += np.sum([self.graph[keys][x] for x in values])
-            print("   Cummulative weight so far -> {}".format(tot_weight))
-        time.sleep(0.5)
-        print("\nMST total weight ->", tot_weight)
+            print("{0}. From {1} ->".format(i, keys), " -> ".join(map(str, values)))
+            time.sleep(0.2)
 
     #==================================================================#
 
@@ -124,7 +108,7 @@ class Graph:  # class that does it all
                 path.append(vertex)
 
         i = 0
-        print("=============================")
+        print("\n=============================")
         print("MST with Kruskal algorithm\n")
         for x in range(len(path)):
             i += 1
@@ -142,8 +126,7 @@ class Graph:  # class that does it all
                   [5, 1], [5, 3],
                   [6, 2]]
 
-        # appointing points to the appropriate node
-        a, b, h, i, g, c, f, d, e = map(tuple, points)
+        a, b, h, i, g, c, f, d, e = map(tuple, points)  # appointing points to the appropriate node
         nodes = ['a', 'b', 'h', 'i', 'g', 'c', 'f', 'd', 'e']  # node tags
 
         # creating a custom points version of the graph (no string tags, instead just the points)
@@ -169,12 +152,9 @@ class Graph:  # class that does it all
         for z in range(len(nodes)):
             x = list(graph_nodes.keys())[z]
             for y in graph_nodes[x]:
-                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400,
-                            c='black', zorder=2, edgecolor='blue', linewidth=5)
-                plt.plot([x[0], y[0]], [x[1], y[1]],
-                         c='black', zorder=1, linewidth=20)
-                plt.plot([x[0], y[0]], [x[1], y[1]],
-                         c='red', zorder=1, linewidth=7)
+                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400, c='black', zorder=2, edgecolor='blue', linewidth=5)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='black', zorder=1, linewidth=20)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='red', zorder=1, linewidth=7)
             plt.text(points[z][0], points[z][1], nodes[z],
                      fontdict={'color': 'white', 'family': 'Comic Sans MS', 'size': 25}, horizontalalignment='center', verticalalignment='center')
 
@@ -194,7 +174,7 @@ class Graph:  # class that does it all
         tag(4.5, 1.1, 2, 'black')
         tag(5.3, 1.5, 10, 'black')
 
-        plt.gca().set_title('Graph', fontsize=15)
+        plt.gca().set_title('Graph')
         plt.gca().axes.get_xaxis().set_visible(False)
         plt.gca().axes.get_yaxis().set_visible(False)
         plt.tight_layout()
@@ -204,10 +184,8 @@ class Graph:  # class that does it all
         for z in range(len(nodes)):
             x = list(graph_nodes.keys())[z]
             for y in graph_nodes[x]:
-                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400,
-                            c='black', zorder=3, edgecolor='blue', linewidth=5)
-                plt.plot([x[0], y[0]], [x[1], y[1]], c='red',
-                         zorder=1, linewidth=20, alpha=0.1)
+                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400, c='black', zorder=3, edgecolor='blue', linewidth=5)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='red', zorder=1, linewidth=20, alpha=0.1)
             plt.text(points[z][0], points[z][1], nodes[z],
                      fontdict={'color': 'white', 'family': 'Comic Sans MS', 'size': 25}, horizontalalignment='center', verticalalignment='center')
 
@@ -228,13 +206,11 @@ class Graph:  # class that does it all
         tag(5.3, 2.5, 6, 'black')
         tag(4.5, 1.1, 2, 'black')
 
-        plt.gca().set_title('MST via Kruskal Algorithm, Total Weight -> {}'.format(
-            np.sum([x[0] for x in path])), fontsize=15)
+        plt.gca().set_title('MST via Kruskal Algorithm, Total Weight -> {}'.format(np.sum([x[0] for x in path])))
         plt.gca().axes.get_xaxis().set_visible(False)
         plt.gca().axes.get_yaxis().set_visible(False)
         plt.tight_layout()
-        fig.canvas.set_window_title(
-            'Finding MST using Kruskal algorithm on given graph')
+        fig.canvas.set_window_title('Finding MST using Kruskal algorithm on given graph')
         plt.show()
 
         return ''
@@ -244,23 +220,20 @@ class Graph:  # class that does it all
     def show_edges(self):
         """ Func to pretty print out the nodes and it's children along with the each of their weight """
         print('Graph:')
+        keys = list(self.graph.keys())
         i = 0
-        for key in list(self.graph.keys()):
+        for key in keys:
             sub_keys = list(self.graph[key].keys())
             i = i + 1
             for sub_key in sub_keys:
                 if sub_key == sub_keys[0]:
-                    print(
-                        '-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
-                    print(
-                        f'{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}')
+                    print('-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
+                    print(f'{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}')
                     time.sleep(0.2)
                 else:
-                    print(
-                        f"{' ' * len(f'{i}. From {key}')} <--> {sub_key}, weight = {self.graph[key][sub_key]}")
+                    print(f"{' ' * len(f'{i}. From {key}')} <--> {sub_key}, weight = {self.graph[key][sub_key]}")
                     time.sleep(0.2)
-        print(
-            '-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
+        print('-' * len(f"{i}. From {key} <--> {sub_key}, weight = {self.graph[key][sub_key]}"))
 
         # storing the points for the nodes
         points = [[1, 2],
@@ -270,8 +243,7 @@ class Graph:  # class that does it all
                   [5, 1], [5, 3],
                   [6, 2]]
 
-        # appointing points to the appropriate node
-        a, b, h, i, g, c, f, d, e = map(tuple, points)
+        a, b, h, i, g, c, f, d, e = map(tuple, points)  # appointing points to the appropriate node
         nodes = ['a', 'b', 'h', 'i', 'g', 'c', 'f', 'd', 'e']  # node tags
 
         # creating a custom points version of the graph (no string tags, instead just the points)
@@ -295,12 +267,9 @@ class Graph:  # class that does it all
         for z in range(len(nodes)):
             x = list(graph_nodes.keys())[z]
             for y in graph_nodes[x]:
-                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400,
-                            c='black', zorder=2, edgecolor='blue', linewidth=5)
-                plt.plot([x[0], y[0]], [x[1], y[1]],
-                         c='black', zorder=1, linewidth=20)
-                plt.plot([x[0], y[0]], [x[1], y[1]],
-                         c='red', zorder=1, linewidth=7)
+                plt.scatter([x[0], y[0]], [x[1], y[1]], s=2400, c='black', zorder=2, edgecolor='blue', linewidth=5)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='black', zorder=1, linewidth=20)
+                plt.plot([x[0], y[0]], [x[1], y[1]], c='red', zorder=1, linewidth=7)
             plt.text(points[z][0], points[z][1], nodes[z],
                      fontdict={'color': 'white', 'family': 'Comic Sans MS', 'size': 25}, horizontalalignment='center', verticalalignment='center')
 
@@ -336,24 +305,21 @@ class Graph:  # class that does it all
         print("\n=============================\nDijkstra's algorithm")
 
         start = 'a'
-        choice = input("Default source = 'a', change? [Y/N]: ").strip()
+        choice = input("Default source = 'a', change? [Y/N]: ")
         if choice.lower() == 'y':
             while True:  # loop to get valid input
-                start = input(
-                    f"\nEnter source node {set(self.graph.keys())}: ").strip()
-                # check if alpha and in graph
-                if (start.isalpha()) and (start.lower() in self.graph.keys()):
+                start = input(f"\nEnter source node {set(self.graph.keys())}: ")
+                if (start.isalpha()) and (start.lower() in self.graph.keys()):  # check if alpha and in graph
                     start = start.lower()
                     break
                 else:
-                    print('Enter valid input from {}\n'.format(
-                        list(self.graph.keys())))
+                    print('Enter valid input from {}\n'.format(list(self.graph.keys())))
 
         paths = []
         path_times = []
         end_path = []
         path_weight = []
-        print("=============================")
+        print("\n=============================")
         # iterate through each node set as destination (other than starting node)
         for x in self.graph.keys() - start:
             self.dijkstra_path(self.graph.copy(), end=x, start=start)
@@ -365,7 +331,8 @@ class Graph:  # class that does it all
             path_weight.append(s_dist[x])
 
         print("\nDijkstra paths from source to all nodes in a graph:-\n")
-        df = pd.DataFrame(list(zip(paths, path_weight, path_times)), columns=['Path', 'Weight', 'Time (s)'],
+        df = pd.DataFrame(list(zip(paths, path_weight, path_times)),
+                          columns=['Path', 'Weight', 'Time (s)'],
                           index=[[start] * len(path_times), end_path]).sort_values('Weight')
         df.index.set_names(['Start', 'End'], inplace=True)
         print(df)
