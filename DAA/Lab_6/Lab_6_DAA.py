@@ -133,4 +133,3 @@ tree = {1: [2, 3],
 test = Graph(tree, 1)  # initializing tree and starting point
 test.compute()
 time.sleep(1)
-print('Ashwin Rajesh Jawalikar, 20190802140')
