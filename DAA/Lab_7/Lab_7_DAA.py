@@ -394,7 +394,7 @@ class Graph:  # class that does it all
         self.kruskal()
         self.dijkstra_allpaths()
         time.sleep(1)
-        return '\nAshwin Rajesh Jawalikar, 20190802140\nTo Dr. Saif and Ms. Vijaylaxmi -> Thank you for an awesome semester of coding!'
+        return "\nFinished"
 
 
 graph = {'a': {'b': 4, 'h': 8},
