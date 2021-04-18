@@ -246,7 +246,5 @@ print('Target = {}'.format(target))
 print('Unique Combinations: ')
 comb_sum(candidates, target)
 print('Total combinations = {}'.format(comb_count))
-
-print('\nAshwin Rajesh Jawalikar, 20190802140')
 ###############################################################################################################################################
 ```
